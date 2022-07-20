@@ -1,15 +1,15 @@
-const express = require('express');
-const axios = require('axios');
+const express = require('express')
+const axios = require('axios')
 
-const app = express();
+const app = express()
 
-app.use(express.json());
+app.use(express.json())
 
 app.post('/events', async (req, res) => {
-    const { type, data } = req.body;
-    console.log({Received_Event:req.body.type});
+    const { type, data } = req.body
+    console.log({Received_Event:req.body.type})
     if (type === 'CommentCreated') {
-        const status = data.content.includes('orange') ? 'rejected' : 'approved';
+        const status = data.content.includes('orange') ? 'rejected' : 'approved'
 
         await axios.post('http://event-bus-srv:4005/events', {
             type: 'CommentModerated',
@@ -19,12 +19,12 @@ app.post('/events', async (req, res) => {
                 status,
                 content: data.content,
             }
-        });
+        })
     }
 
-    res.send({});
-});
+    res.send({})
+})
 
 app.listen(4003, () => {
-    console.log('Listening on port 4003');
-});
+    console.log('Listening on port 4003')
+})
